@@ -117,7 +117,6 @@ In alto sul menu file -> open folder e apri la cartella in cui è posizionato il
 
 
 ```bash
-Ini, TOML
 # .env file configuration
 
 # Credenziali Database (Default)
