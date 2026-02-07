@@ -150,6 +150,10 @@ Docker scaricherà le immagini necessarie (Postgres, n8n) e costruirà il contai
 
 # ⚙️ 4. Configurazione Workflow (n8n)
 
+## Scarica llama3.2
+```bash
+ ollama pull llama3.2
+```
 ## Una volta avviato Docker, devi configurare il cervello del bot.
 Apri il browser e vai su: **http://localhost:5678**
 Crea il tuo account amministratore locale.
