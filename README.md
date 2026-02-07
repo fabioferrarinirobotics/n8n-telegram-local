@@ -2,18 +2,18 @@
 
 Questo progetto implementa un Assistente AI completo su Telegram che gira interamente sul tuo computer (Windows 11).
 
-🌟 Caratteristiche
+# 🌟 Caratteristiche
 - Privacy Totale: Nessun dato lascia la tua rete locale.
 - Costo Zero: Nessuna API key a pagamento (niente OpenAI).
 - AI Locale: Utilizza la potenza di Ollama (Llama 3, DeepSeek, Qwen).
 - Architettura Docker: Tutto è containerizzato per una gestione pulita.
 - Bridge Python: Script personalizzato per gestire la comunicazione con Telegram senza   necessità di HTTPS o certificati complessi.
 
-🛠️ 1. Prerequisiti (Installazione da Zero)
+# 🛠️ 1. Prerequisiti (Installazione da Zero)
 Prima di iniziare, assicurati di avere installato i seguenti software sul tuo computer Windows 11.
 
 
-🔹 A. Ollama (Il Cervello AI)
+## 🔹 A. Ollama (Il Cervello AI)
    Il software che esegue i modelli di linguaggio (LLM) in locale.
 
    Scarica e installa da: ollama.com
@@ -24,7 +24,7 @@ Prima di iniziare, assicurati di avere installato i seguenti software sul tuo co
    ollama pull llama3.2
    (Puoi scaricare altri modelli, ma assicurati di aggiornare poi il nodo in n8n).
 
-🔹 B. Docker Desktop (Il Motore)
+##🔹 B. Docker Desktop (Il Motore)
    Necessario per eseguire n8n, il database e il bridge Python.
 
    Scarica e installa da: docker.com/products/docker-desktop
@@ -33,7 +33,7 @@ Prima di iniziare, assicurati di avere installato i seguenti software sul tuo co
 
    Dopo l'avvio, attendi che l'icona della balena in basso a destra diventi verde.
 
-🔹 C. Visual Studio Code (Editor)
+##🔹 C. Visual Studio Code (Editor)
     L'ambiente di sviluppo consigliato.
     Scarica e installa da: code.visualstudio.com
  
@@ -41,46 +41,47 @@ Prima di iniziare, assicurati di avere installato i seguenti software sul tuo co
 
 
 
-🚀 2. Installazione del Progetto
+#🚀 2. Installazione del Progetto
 
 
 # Passo 1: Clona il Repository
 
 Apri il terminale, naviga nella cartella dove vuoi salvare il progetto ed esegui:
+oppure scarica il progetto in formato zip e copialo all'interno di una cartella del tuo computer
 
 ```bash
 git clone https://github.com/TUO_USERNAME/n8n-telegram-local.git
 cd n8n-telegram-local
 ```
 
-## Passo 2: Come ottenere il Token Telegram (Guida @BotFather)
+# Passo 2: Come ottenere il Token Telegram (Guida @BotFather)
 
 Per far funzionare il tuo bot, devi registrarlo ufficialmente sui server di Telegram. Non preoccuparti, è gratis e richiede 30 secondi.
 
-# 1. Trova il "Padre dei Bot"
+## 1. Utilizza il comando @BotFather
 Apri l'app di Telegram (sul telefono o sul PC).
 
 Nella barra di ricerca in alto, scrivi: @BotFather.
 
 Clicca sul primo risultato che ha la spunta blu ✅ di verifica (è il bot ufficiale di Telegram).
 
-# 2. Crea il nuovo Bot
+## 2. Crea il nuovo Bot
 Una volta aperta la chat, clicca sul tasto Avvia (o Start) in basso.
 
-Scrivi (o clicca) il comando:
+### Scrivi (o clicca) il comando:
 
 Plaintext
 /newbot
 BotFather ti risponderà: "Alright, a new bot. How are we going to call it?".
 
-# 3. Scegli il Nome (Display Name)
+## 3. Scegli il Nome (Display Name)
 Cosa scrivere: Il nome che vuoi che le persone vedano nella lista chat (es. "Il Mio Assistente AI", "MarioGPT", "Jarvis").
 
 Regole: Puoi usare spazi, emoji e lettere maiuscole.
 
 Esempio: Super AI Locale 🤖
 
-# 4. Scegli l'Username (ID Univoco)
+## 4. Scegli l'Username (ID Univoco)
 BotFather ti chiederà ora un username.
 
 Cosa scrivere: Un identificativo unico per il tuo bot (quello che si usa per cercarlo con la @).
@@ -93,27 +94,29 @@ Esempio non valido: mio super ai (ha spazi e manca 'bot').
 
 Nota: Se l'username è già preso, BotFather ti dirà "Sorry, this username is already taken". Riprova aggiungendo dei numeri o cambiando nome (es. mio_super_ai_99_bot).
 
-# 5. Copia il Token
+## 5. Copia il Token
 Se tutto è andato a buon fine, BotFather ti scriverà un messaggio che inizia con "Done! Congratulations on your new bot".
 
 Cerca la riga che dice: Use this token to access the HTTP API:
-
 Sotto vedrai una stringa lunga di numeri e lettere, simile a questa: 123456789:ABCdefGHIjklMNOpqrsTUVwxyz
+Copia interamente questa stringa e salvala da qualche parte es blocco note.
 
-Copia interamente questa stringa.
 
-# 6. Incollala nel tuo file .env alla voce TELEGRAM_BOT_TOKEN.
-
-⚠️ Attenzione alla Sicurezza
+### ⚠️ Attenzione alla Sicurezza
 Non condividere mai questo token con nessuno. Chi possiede il token può controllare il tuo bot.
-
 Se per sbaglio lo condividi, torna su BotFather e usa il comando /revoke per cancellarlo e ottenerne uno nuovo.
 
+# Apri visual studio code 
+
+In alto sul menu file -> open folder e apri la cartella in cui è posizionato il codice del progetto
 
 
-Passo 2: Configura le Variabili d'Ambiente (.env)
-Crea un file chiamato .env nella cartella principale del progetto e incolla il seguente contenuto. NOTA: Devi inserire il tuo Token Telegram ottenuto da @BotFather.
+## Passo 2: Configura le Variabili d'Ambiente (.env)
 
+### Crea un file chiamato .env nella cartella principale del progetto e incolla il seguente contenuto. NOTA: Devi inserire il tuo Token Telegram ottenuto da @BotFather.
+
+
+```bash
 Ini, TOML
 # .env file configuration
 
@@ -128,34 +131,34 @@ N8N_USER_MANAGEMENT_JWT_SECRET=altra_chiave_segreta_random
 
 # IL TUO TOKEN TELEGRAM (Obbligatorio)
 TELEGRAM_BOT_TOKEN=123456789:ABCdefGHIjklMNOpqrsTUVwxyz
+```
+## Incolla il token dopo TELEGRAM_BOT_TOKEN=
 
 
 
+# ▶️ 3. Avvio del Sistema
 
-▶️ 3. Avvio del Sistema
-Assicurati che Docker Desktop sia aperto e in esecuzione.
+## Su visual studio Terminal-New terminal
+si aprira in basso il terminale
 
-Apri il terminale nella cartella del progetto.
 
-Esegui il comando per costruire e avviare i container:
-
-PowerShell
+### Esegui il comando per costruire e avviare i container:
+**PowerShell**
+```bash
 docker-compose up -d
+```bash
+
 Docker scaricherà le immagini necessarie (Postgres, n8n) e costruirà il container Python personalizzato. Attendi qualche minuto.
 
-⚙️ 4. Configurazione Workflow (n8n)
-Una volta avviato Docker, devi configurare il cervello del bot.
+# ⚙️ 4. Configurazione Workflow (n8n)
 
-Apri il browser e vai su: http://localhost:5678
-
+## Una volta avviato Docker, devi configurare il cervello del bot.
+Apri il browser e vai su: **http://localhost:5678**
 Crea il tuo account amministratore locale.
 
-Importa il Workflow:
-
+## Importa il Workflow:
 Clicca su "Add Workflow" (in alto a destra).
-
 Clicca sui tre puntini ... -> Import from File.
-
 Seleziona il file JSON del workflow incluso in questo progetto.
 
 Configura il nodo Ollama (se necessario):
@@ -164,7 +167,7 @@ Assicurati che il Base URL sia impostato su: http://host.docker.internal:11434
 
 Assicurati che il Model Name sia: llama3.2
 
-⚠️ PASSAGGIO CRITICO: ATTIVAZIONE
+# ⚠️ PASSAGGIO CRITICO: ATTIVAZIONE
 Affinché il bot funzioni, DEVI ATTIVARE il workflow.
 
 Clicca su Save (o Publish) in alto a destra.
