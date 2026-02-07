@@ -146,8 +146,7 @@ si aprira in basso il terminale
 **PowerShell**
 ```bash
 docker-compose up -d
-```bash
-
+```
 Docker scaricherà le immagini necessarie (Postgres, n8n) e costruirà il container Python personalizzato. Attendi qualche minuto.
 
 # ⚙️ 4. Configurazione Workflow (n8n)
@@ -171,47 +170,42 @@ Assicurati che il Model Name sia: llama3.2
 Affinché il bot funzioni, DEVI ATTIVARE il workflow.
 
 Clicca su Save (o Publish) in alto a destra.
-
 Sposta l'interruttore Active su ON (Deve diventare VERDE).
-
 Se l'interruttore non è verde, il bot risponderà con errore 404.
 
 🐞 5. Comandi di Debug
 Se il bot non risponde, usa questi comandi nel terminale per capire cosa succede.
 
-A. Controllare se il messaggio arriva (Python Bridge)
+## A. Controllare se il messaggio arriva (Python Bridge)
 Questo log ti mostra se Telegram sta comunicando con il tuo PC.
 
 PowerShell
+```bash
 docker logs -f telegram-bridge
 Cosa cercare:
-
+```
 📩 Nuovo messaggio: Il messaggio è arrivato.
-
 ✅ Risposta consegnata: Tutto ok.
 
 Error 404: Il workflow su n8n è spento o l'URL è sbagliato.
-
 Connection Refused: n8n non è raggiungibile.
 
-B. Controllare perché l'AI non risponde (n8n Executions)
+## B. Controllare perché l'AI non risponde (n8n Executions)
 Se il messaggio arriva ma l'AI non risponde:
 
 Vai su n8n (localhost:5678).
-
 Clicca sull'icona Executions nella barra laterale sinistra.
-
 Clicca sull'ultima esecuzione (quella rossa o verde) per vedere il percorso dei dati e l'errore specifico.
 
-C. Riavvio forzato (in caso di aggiornamenti)
+## C. Riavvio forzato (in caso di aggiornamenti)
 Se modifichi il codice Python o il file .env, devi ricreare i container:
 
 PowerShell
+```bash
 docker-compose down
 docker-compose up -d --build
+```
 📝 Note Tecniche
 Rete Docker: Lo script Python utilizza http://host.docker.internal:5678 per comunicare con n8n. Questo permette al container di "uscire" e parlare con l'host Windows.
-
 Persistenza: I dati di n8n e del database sono salvati in volumi Docker persistenti (n8n_data, postgres_storage), quindi non perderai i tuoi workflow riavviando il PC.
-
 Modelli: Se n8n riporta "model not found", verifica di aver scaricato il modello corretto con ollama list nel terminale di Windows.
