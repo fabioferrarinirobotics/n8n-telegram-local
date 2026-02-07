@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_storage:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - ai-network
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - 5678:5678
+    environment:
+      # Collegamento al Database
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
+      - DB_POSTGRESDB_USER=${POSTGRES_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+      
+      # Sicurezza e Configurazione n8n
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - N8N_USER_MANAGEMENT_JWT_SECRET=${N8N_USER_MANAGEMENT_JWT_SECRET}
+      
+      # IMPORTANTE: Permette a n8n di salvare i file binari
+      - N8N_DEFAULT_BINARY_DATA_MODE=default
+    volumes:
+      # FONDAMENTALE: Questo salva i tuoi workflow quando spegni il PC
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ai-network
+
+  telegram-bridge:
+    build: .
+    container_name: telegram-bridge
+    restart: unless-stopped
+    environment:
+      # Prende il token dal tuo .env
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      # URL corretto per la comunicazione interna Docker
+      - N8N_WEBHOOK_URL=http://host.docker.internal:5678/webhook/telegram-bridge
+      # Permette di vedere i log in tempo reale
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - n8n
+    networks:
+      - ai-network
+
+networks:
+  ai-network:
+
+volumes:
+  postgres_storage:
+  n8n_data: # Ora i tuoi workflow sono al sicuro qui
